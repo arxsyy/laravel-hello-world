@@ -24,3 +24,7 @@ Route::get('/world', function () {
 Route::get('/', function () {
     return 'Selamat Datang';
 });
+
+Route::get('/about', function () {
+    return 'NIM : 244107020133 <br> Nama : Marsyalia Fernanda';
+});
