@@ -1,66 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Nama : Marsyalia Fernanda  
+NIM : 244107020133  
+Kelas : TI-2F  
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Jobsheet Week 1 - Pengenalan Web Framework
 
-## About Laravel
+### Mengubah Kode HTML
+![Laravel](ss/laravel.png)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Jobsheet Week 2 - Routing Controller View
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Praktikum 1 - Basic Routing
+### Route /hello
+![Hello](ss/hello.png)  halaman yang muncul sudah sesuai dan bertuliskan "Hello World"
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Route /world
+![World](ss/world.png)  halaman yang muncul sudah sesuai dan bertuliskan "World"
 
-## Learning Laravel
+### Route /
+![Welcome](ss/welcome.png)  halaman muncul dengan tulisan "Selamat Datang"
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Route /about
+![About](ss/about.png) halaman memunculkan data saya
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Praktikum 1 - Route Parameters
+### Route /user/{name}
+![User](ss/user.png)  halaman menampilkan kata yang sesuai dengan parameter dan input dari url
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Route /posts/{post}/comments/{comment}
+![Posts](ss/posts.png)  halaman menampilkan kata yang sesuai dengan parameter dan input dari url
 
-## Laravel Sponsors
+### Route /articles/{id}
+![Articles](ss/articles.png)  halaman menampilkan kata yang sesuai dengan parameter dan input dari url
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Praktikum 1 - Optional Parameters
+### Route /user
+![User2](ss/user2.png)  halaman menampilkan data parameter yang bersifat opsional
 
-### Premium Partners
+### Route /user function John
+![John](ss/john.png)  halaman menampilkan data nama yang sudah di tuliskan di function
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Praktikum 2 - Controller
 
-## Contributing
+### Membuat Controller
+![Buat](ss/cmdctrl.png)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Mengubah Route Hello
+![Ubah](ss/helloctrl.png)
 
-## Code of Conduct
+### Membuat Controller 'PageController'
+![BuatPage](ss/pagectrl.png)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Route /index
+![index](ss/indexctrl.png)
 
-## Security Vulnerabilities
+### Route about
+![about](ss/aboutctrl.png)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Route articles
+![articles](ss/articlesctrl.png)
 
-## License
+### Membuat Single Action Controller
+![single](ss/singlectrl.png)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Route /index
+![index](ss/singleindex.png)
+
+### Route about
+![about](ss/singleabout.png)
+
+### Route articles
+![articles](ss/singlearticles.png)
+
+## Praktikum 2 - Resource Controller
+### Membuat Controller
+![resource](ss/resource.png)
+
+### Mengecek list route
+![route](ss/routelist.png)
+
+## Praktikum 3 - View
+### Route /greeting
+![view](ss/viewhello.png)
+
+### Route view.blog
+![blog](ss/viewblog.png)
+
+### Route view pada controller
+![view](ss/viewwelcome.png)
+
+### Meneruskan data ke view
+![data](ss/dataview.png)
