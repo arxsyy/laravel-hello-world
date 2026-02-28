@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +21,8 @@ use App\Http\Controllers\PageController;
 // Route::get('/hello', function () {
 //     return 'Hello World';
 // });
-Route::get('/hello', [WelcomeController::class, 'hello']);
+// Route::get('/hello', [WelcomeController::class, 'hello']);
+Route::get('/', HomeController::class);
 
 Route::get('/world', function () {
     return 'World';
@@ -34,7 +38,8 @@ Route::get('/', [PageController::class, 'index']);
 //     return 'NIM : 244107020133 <br> Nama : Marsyalia Fernanda';
 // });
 
-Route::get('/about', [WelcomeController::class, 'about']);
+// Route::get('/about', [WelcomeController::class, 'about']);
+Route::get('/about', AboutController::class);
 
 Route::get('/user/{name}', function ($name) {
     return 'Nama saya ' . $name;
@@ -48,7 +53,8 @@ Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
 //     return 'Halaman Artikel dengan ID ' . $articlesId;
 // });
 
-Route::get('/articles/{id}', [WelcomeController::class, 'articles']);
+// Route::get('/articles/{id}', [WelcomeController::class, 'articles']);
+Route::get('/articles/{id}', ArticleController::class);
 
 Route::get('/user/{name?}', function ($name=null) {
     return 'Nama saya ' . $name;
