@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\LevelController;
 use App\Http\Controllers\PhotoController;
 
 /*
@@ -80,3 +81,5 @@ Route::resource('photos', PhotoController::class)->except(['create', 'store', 'u
 // });
 
 Route::get('/greeting', [WelcomeController::class,'greeting']);
+
+Route::get('/level', [LevelController::class, 'index']);
