@@ -8,6 +8,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\KategoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,3 +84,4 @@ Route::resource('photos', PhotoController::class)->except(['create', 'store', 'u
 Route::get('/greeting', [WelcomeController::class,'greeting']);
 
 Route::get('/level', [LevelController::class, 'index']);
+Route::get('/kategori', [KategoriController::class, 'index']);
