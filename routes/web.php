@@ -46,9 +46,9 @@ Route::get('/', HomeController::class);
 // Route::get('/about', [WelcomeController::class, 'about']);
 Route::get('/about', AboutController::class);
 
-Route::get('/user/{name}', function ($name) {
-    return 'Nama saya ' . $name;
-});
+// Route::get('/user/{name}', function ($name) {
+//     return 'Nama saya ' . $name;
+// });
 
 Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
     return 'Pos ke-' . $postId . ' Komentar ke-' . $commentId;
@@ -61,13 +61,13 @@ Route::get('/posts/{post}/comments/{comment}', function ($postId, $commentId) {
 // Route::get('/articles/{id}', [WelcomeController::class, 'articles']);
 Route::get('/articles/{id}', ArticleController::class);
 
-Route::get('/user/{name?}', function ($name=null) {
-    return 'Nama saya ' . $name;
-});
+// Route::get('/user/{name?}', function ($name=null) {
+//     return 'Nama saya ' . $name;
+// });
 
-Route::get('/user/{name?}', function ($name='John') {
-    return 'Nama saya ' . $name;
-});
+// Route::get('/user/{name?}', function ($name='John') {
+//     return 'Nama saya ' . $name;
+// });
 
 Route::resource('photos', PhotoController::class);
 
