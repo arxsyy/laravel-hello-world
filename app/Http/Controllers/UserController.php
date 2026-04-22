@@ -10,11 +10,11 @@ class UserController extends Controller
 {
     public function index()
     {
-        // Praktikum 1 - Nomor 2: Buka file controller dengan nama UserController.php dan ubah script seperti gambar di bawah ini
+        // Praktikum 1 - Nomor 5: Ubah kembali file controller
         $data = [
             'level_id' => 2,
-            'username' => 'manager_dua',
-            'nama' => 'Manager Dua',
+            'username' => 'manager_tiga',
+            'nama' => 'Manager 3',
             'password' => Hash::make('12345')
         ];
         UserModel::create($data);
