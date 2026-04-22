@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    // READ - Menampilkan semua data user dengan relationship
     public function index()
     {
-        $user = UserModel::all(); 
+        // Menggunakan with() untuk eager loading relationship
+        $user = UserModel::with('level')->get(); 
         return view('user', ['data' => $user]);
     }
 
@@ -36,7 +38,7 @@ class UserController extends Controller
     // UPDATE - Mengedit data user
     public function ubah($id)
     {
-        $user = UserModel::find($id);
+        $user = UserModel::with('level')->find($id);
         return view('user_ubah', ['data' => $user]);
     }
 

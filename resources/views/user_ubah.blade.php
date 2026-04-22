@@ -19,6 +19,8 @@
         <br><br>
         <label>Level ID</label>
         <input type="number" name="level_id" placeholder="Masukan ID Level" value="{{ $data->level_id }}">
+        <br>
+        <small>Level Saat Ini: <strong>{{ $data->level->level_nama }}</strong></small>
         <br><br>
         <input type="submit" class="btn btn-success" value="Simpan">
         <a href="/user">Kembali</a>
