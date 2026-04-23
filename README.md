@@ -244,3 +244,84 @@ Setiap memiliki kelebihan:
 - Lebih mudah untuk CRUD standar
 
 **Kesimpulan secara personal:** Saya lebih mudah menggunakan **Eloquent ORM** karena sintaknya lebih clean, automatic relationship handling, dan lebih sesuai untuk operasi CRUD biasa. Namun untuk query kompleks atau raw query, Query Builder lebih fleksibel.
+
+# Jobsheet Week 4 - Model dan Eloquent ORM
+
+## Praktikum 1 - $fillable
+
+### Membuat file model UserModel.php
+![UserModel](ss/JS4P1N3.png)
+
+### Membuat file controller UserController.php dengan method index
+![UserController](ss/JS4P1N6.png)
+
+## Praktikum 2 - Retrieving Single Models
+
+### Praktikum 2.1 - Retrieving Single Models
+
+### Hasil nomor 3
+![ViewUser](ss/p2.1no1.png)
+
+### Hasil nomor 5
+![Browser](ss/p2.1no6.png)
+
+### Hasil nomor 9
+![CreateView](ss/p2.1no8.png)
+
+### Hasil nomor 11 (notfound)
+![CreateView](ss/4040.png)
+
+### Praktikum 2.2 - Not Found Exceptions
+
+#### Ubah file controller UserController.php menggunakan method findOrFail()
+![FindOrFail](ss/p2.2no1.png)
+
+#### Ubah file controller UserController.php menggunakan method where() dengan firstOrFail()
+![WhereFirstOrFail](ss/p2.2no3.png)
+
+### Praktikum 2.3 - Attribute Changes
+
+#### Hasil nomor 1
+![AttributeChanges](ss/p2.3no1.png)
+
+### Hasil nomor 3
+![CreateView](ss/p2.3no3.png)
+
+### Praktikum 2.4 - Retrieving Aggregates
+
+#### Hasil nomor 3
+![Aggregates](ss/p4.png)
+
+#### Hasil nomor 5
+![AggregateOutput](ss/p4no4.png)
+
+#### Hasil nomor 7
+![AggregateOutput](ss/p6.png)
+
+#### Hasil nomor 9
+![AggregateOutput](ss/no8.png)
+
+#### Hasil nomor 10
+![tidaksave](ss/tidaksave.png)
+![save](ss/sudahsave.png)
+
+### Praktikum 2.5 - Retrieving or Creating Models
+
+#### Hasil nomor 2
+![FirstOrCreate](ss/5no1.png)
+
+#### Hasil nomor 4
+![Result](ss/5no2.png)
+
+### Praktikum 2.6 - Create, Read, Update, Delete (CRUD)
+
+#### Hasil nomor 3
+![CreateView](ss/6no3.png)
+
+#### Hasil nomor 4
+![AddRoute](ss/6no4.png)
+
+### Praktikum 2.7 - Relationships
+
+#### Hasil nomor 7
+![OneToMany](ss/p7.png)
