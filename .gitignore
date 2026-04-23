@@ -16,3 +16,9 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Jobsheet & Documentation (Local only)
+/jobsheet
+/js4-images
+*.pdf
+*.docx
