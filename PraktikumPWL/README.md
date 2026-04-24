@@ -125,3 +125,75 @@ Karena model `User` di Laravel sudah memiliki casting `'password' => 'hashed'` s
 |---|---|---|
 | 1 | Error `Cannot declare class UserForm` karena ada duplikat file | Menghapus folder `app\Filament\Resources` yang lama menggunakan perintah `Remove-Item -Recurse -Force app\Filament\Resources` lalu menjalankan `composer dump-autoload` |
 | 2 | Halaman `/admin` menampilkan 404 Not Found | Memastikan perintah dijalankan di dalam folder `PraktikumPWL` bukan di folder `PWL`, lalu menjalankan ulang `php artisan serve` |
+
+## JOBSHEET 5.3
+### Topik: Membuat Migration, Model, Relasi & Resource Category
+ 
+---
+ 
+### Hasil langkah 1
+![prak](ssf/p3l1.png)
+
+### Hasil langkah 2
+![prak](ssf/p3l2.png)
+
+### Hasil langkah 4
+![prak](ssf/p3l4.png)
+
+### Hasil langkah 5
+![prak](ssf/p3l5.png)
+
+### Membuat Resource Category
+![prak](ssf/resource.png)
+
+### Tampilan Create Category
+![prak](ssf/createcat.png)
+
+### Tampilan List Category
+![prak](ssf/laraveltampil.png)
+
+## J. Analisis & Diskusi
+ 
+### 1. Mengapa kita perlu $fillable?
+ 
+`$fillable` berfungsi untuk menentukan kolom mana saja yang boleh diisi secara mass assignment, yaitu ketika data dikirim sekaligus dalam bentuk array seperti yang dilakukan Filament saat menyimpan form. Tanpa `$fillable`, Laravel akan menolak penyimpanan data dan melempar `MassAssignmentException` sebagai perlindungan dari serangan injeksi data.
+ 
+### 2. Apa fungsi $casts pada Laravel?
+ 
+`$casts` digunakan untuk mengonversi tipe data kolom database secara otomatis saat dibaca maupun disimpan. Misalnya kolom `tags` bertipe JSON di database akan otomatis dikonversi menjadi array PHP, kolom `published` dikonversi menjadi `true`/`false`, dan kolom `published_at` dikonversi menjadi objek Carbon sehingga bisa diformat dan dimanipulasi tanpa perlu konversi manual.
+ 
+### 3. Apa perbedaan integer biasa dengan foreign key?
+ 
+Integer biasa hanya menyimpan angka tanpa hubungan apapun dengan tabel lain. Foreign key adalah integer yang secara eksplisit mereferensi kolom `id` di tabel lain, sehingga database bisa memvalidasi bahwa nilai yang dimasukkan benar-benar ada di tabel tujuan. Foreign key juga memungkinkan pengaturan perilaku saat data induk dihapus, seperti `cascade` atau `restrict`.
+ 
+### 4. Bagaimana jika category dihapus tetapi masih ada post?
+ 
+Jika tidak ada foreign key constraint, data post akan tetap ada dengan `category_id` yang sudah tidak valid (orphan record). Jika menggunakan foreign key dengan `onDelete('restrict')`, penghapusan category akan gagal selama masih ada post yang mereferensikannya. Jika menggunakan `onDelete('cascade')`, semua post yang berelasi akan ikut terhapus secara otomatis.
+ 
+---
+ 
+## K. Tugas Praktikum
+ 
+### Screenshot Struktur Tabel di Database
+ 
+![DB Categories](ssf/tabeldb.png)
+
+ 
+### Screenshot Form Category (dengan validasi slug unik)
+ 
+> _![Form Category](ssf/tp2.png)_
+ 
+### Screenshot List Category (minimal 3 kategori)
+ 
+> _![List Category](ssf/tp1.png)_
+ 
+---
+ 
+## Kendala dan Solusi
+ 
+| No | Kendala | Solusi |
+|---|---|---|
+| 1 | Error `Target class [App\Models\Category] does not exist` saat menjalankan relasi | Memastikan namespace model sudah benar dan menjalankan `composer dump-autoload` |
+| 2 | Validasi `->unique()` pada slug tetap lolos duplikat saat edit | Menambahkan parameter `ignoreRecord: true` agar validasi mengabaikan record yang sedang diedit |
+| 3 | Foreign key gagal ditambahkan karena tabel `posts` sudah dibuat tanpa constraint | Membuat migration baru dengan `php artisan make:migration add_foreign_key_to_posts_table` dan menambahkan `$table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')` |
+ 
