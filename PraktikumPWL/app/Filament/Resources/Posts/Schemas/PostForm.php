@@ -12,6 +12,9 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Schemas\Components\Section;
+use Filament\Support\Icons\Heroicon;
+use Filament\Schemas\Components\Group;
 
 class PostForm
 {
@@ -19,25 +22,46 @@ class PostForm
     {
         return $schema
             ->components([
-                TextInput::make('title')
-                    ->required()
-                    ->rules('min:5'),
-                TextInput::make('slug')
-                    ->required()
-                    ->unique(ignoreRecord: true),
-                Select::make('category_id')
-                    ->relationship('category', 'name')
-                    ->preload()
-                    ->searchable(),
-                ColorPicker::make('color'),
-                MarkdownEditor::make('content'),
-                // RichEditor::make('content'),
-                FileUpload::make('image')
-                ->disk('public')
-                ->directory('posts'),
-                TagsInput::make('tags'),
-                Checkbox::make('published'),
-                DateTimePicker::make('published_at'),
-            ]);
+                            // Kiri - Post Details (2/3 lebar)
+            Section::make('Post Details')
+                ->description('Fill in the details of the post')
+                ->icon('heroicon-o-document-text')
+                ->schema([
+                    Group::make([
+                        TextInput::make('title'),
+                        TextInput::make('slug'),
+                        Select::make('category_id')
+                            ->relationship('category', 'name')
+                            ->preload()
+                            ->searchable(),
+                        ColorPicker::make('color'),
+                    ])->columns(2),
+                    MarkdownEditor::make('content')
+                        ->columnSpan(2),
+                ])->columnSpan(2),
+
+                    // Kanan - Image & Meta (1/3 lebar)
+                    Group::make([
+                        Section::make('Image Upload')
+                            ->schema([
+                                FileUpload::make('image')
+                                    ->disk('public')
+                                    ->directory('posts'),
+                            ]),
+                        Section::make('Meta Information')
+                            ->schema([
+                                TagsInput::make('tags'),
+                                Checkbox::make('published'),
+                                DateTimePicker::make('published_at'),
+                            ])->columns(2),
+                    ])->columnSpan(1),
+                        // RichEditor::make('content'),
+                        FileUpload::make('image')
+                        ->disk('public')
+                        ->directory('posts'),
+                        TagsInput::make('tags'),
+                        Checkbox::make('published'),
+                        DateTimePicker::make('published_at'),
+            ])->columns(3);
     }
 }
