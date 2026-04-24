@@ -196,4 +196,90 @@ Jika tidak ada foreign key constraint, data post akan tetap ada dengan `category
 | 1 | Error `Target class [App\Models\Category] does not exist` saat menjalankan relasi | Memastikan namespace model sudah benar dan menjalankan `composer dump-autoload` |
 | 2 | Validasi `->unique()` pada slug tetap lolos duplikat saat edit | Menambahkan parameter `ignoreRecord: true` agar validasi mengabaikan record yang sedang diedit |
 | 3 | Foreign key gagal ditambahkan karena tabel `posts` sudah dibuat tanpa constraint | Membuat migration baru dengan `php artisan make:migration add_foreign_key_to_posts_table` dan menambahkan `$table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')` |
+
+## JOBSHEET 6.1
+### Topik: Implementasi Form Elements & Resource Post di Filament
  
+---
+ 
+### Membuat Resource Post
+![prak](ssf/6l1.png)
+ 
+### Tampilan Form Create Post (semua elemen)
+![prak](ssf/6l2.png)
+ 
+### Tampilan Create Post
+![prak](ssf/createpost.png)
+ 
+### Select dari tabel category
+![prak](ssf/select.png)
+
+### Color Picker
+![prak](ssf/color.png)
+ 
+### Markdown
+![prak](ssf/markdown.png)
+
+### RichEditor
+![prak](ssf/richeditor.png)
+ 
+### File Upload
+![prak](ssf/upload.png)
+![prak](ssf/berhasil.png)
+
+### Tags Input
+![prak](ssf/tag.png)
+
+### Checkbox
+![prak](ssf/publish.png)
+ 
+### Date Picker
+![prak](ssf/date.png)
+
+---
+ 
+## I. Analisis & Diskusi
+ 
+### 1. Mengapa kita perlu storage:link?
+ 
+Laravel menyimpan file upload di folder `storage/app/public`, sedangkan web server hanya bisa mengakses folder `public`. Perintah `php artisan storage:link` membuat symbolic link dari `public/storage` ke `storage/app/public`, sehingga gambar yang diupload bisa diakses melalui URL browser tanpa perlu memindahkan file secara manual.
+ 
+### 2. Apa fungsi $casts untuk field JSON?
+ 
+Field bertipe JSON di database disimpan sebagai string teks. Dengan menambahkan `'tags' => 'array'` pada `$casts`, Laravel otomatis mengkonversi string JSON tersebut menjadi array PHP saat dibaca, dan mengkonversi array kembali menjadi JSON saat disimpan. Ini memungkinkan kita bekerja langsung dengan array di PHP tanpa perlu memanggil `json_decode()` atau `json_encode()` secara manual.
+ 
+### 3. Mengapa kita menggunakan category.name bukan category_id?
+ 
+`category_id` hanya menampilkan angka ID yang tidak bermakna bagi pengguna admin. Dengan menggunakan `category.name`, Filament mengakses relasi `belongsTo` yang sudah dibuat pada model Post dan menampilkan nama category yang sebenarnya. Ini memanfaatkan Eloquent eager loading sehingga data relasi diambil secara efisien sekaligus.
+ 
+### 4. Apa perbedaan RichEditor dan MarkdownEditor?
+ 
+RichEditor menampilkan toolbar dengan tombol format (bold, italic, list, tabel, gambar) dan hasilnya disimpan dalam format HTML, sehingga cocok untuk konten yang akan langsung dirender sebagai HTML. MarkdownEditor menggunakan sintaks Markdown dan hasilnya disimpan sebagai teks Markdown mentah, sehingga lebih ringan dan cocok jika konten perlu diproses atau diubah format di kemudian hari.
+ 
+---
+ 
+## J. Tugas Praktikum
+ 
+### Screenshot Form Create Post
+ 
+![Form Create Post](ssf/createpost.png)
+ 
+### Screenshot Tabel Post
+ 
+![Tabel Post](ssf/posttampil.png)
+![Tabel Post](ssf/muncul.png)
+![Tabel Post](ssf/tugas3.png)
+ 
+### Screenshot Struktur Folder Storage
+ 
+![Storage](ssf/storage.png)
+ 
+---
+ 
+## Kendala dan Solusi
+ 
+| No | Kendala | Solusi |
+|---|---|---|
+| 1 | Gambar tidak muncul di tabel meskipun sudah diupload | Menjalankan `php artisan storage:link` dan memastikan nama field `image` di `PostForm.php` dan `PostsTable.php` sama persis |
+| 2 | Select category tidak menampilkan data | Memastikan relasi `belongsTo(Category::class)` sudah ada di model Post dan menggunakan `->relationship('category', 'name')` bukan `->options()` |
+| 3 | Error saat menyimpan field tags | Memastikan `'tags' => 'array'` sudah ada di `$casts` pada model Post karena field bertipe JSON |
