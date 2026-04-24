@@ -283,3 +283,49 @@ RichEditor menampilkan toolbar dengan tombol format (bold, italic, list, tabel, 
 | 1 | Gambar tidak muncul di tabel meskipun sudah diupload | Menjalankan `php artisan storage:link` dan memastikan nama field `image` di `PostForm.php` dan `PostsTable.php` sama persis |
 | 2 | Select category tidak menampilkan data | Memastikan relasi `belongsTo(Category::class)` sudah ada di model Post dan menggunakan `->relationship('category', 'name')` bukan `->options()` |
 | 3 | Error saat menyimpan field tags | Memastikan `'tags' => 'array'` sudah ada di `$casts` pada model Post karena field bertipe JSON |
+
+## JOBSHEET 6.2
+### Topik: Custom Layout Form dengan Section & Group di Filament
+ 
+## I. Analisis & Diskusi
+ 
+### 1. Mengapa layout form penting dalam aplikasi admin?
+ 
+Layout form yang baik membantu admin membaca dan mengisi data lebih cepat karena field yang berhubungan dikelompokkan secara logis. Form yang tidak terstruktur dengan field berjejer panjang ke bawah memaksa pengguna untuk banyak scroll dan sulit menemukan field tertentu. Dengan Section dan Group, admin panel terlihat lebih profesional dan mengurangi kemungkinan kesalahan input.
+ 
+### 2. Apa perbedaan Section dan Group?
+ 
+Section menampilkan kotak visual dengan judul, deskripsi, dan icon yang terlihat oleh pengguna, sehingga cocok untuk mengelompokkan field yang memiliki kategori berbeda seperti "Post Details" dan "Meta Information". Group tidak memiliki tampilan visual apapun dan hanya berfungsi sebagai wadah pengatur layout, misalnya untuk mengatur beberapa Section agar tersusun dalam satu baris kolom.
+ 
+### 3. Kapan kita menggunakan columnSpanFull()?
+ 
+`columnSpanFull()` digunakan ketika sebuah field perlu mengambil seluruh lebar form terlepas dari berapa kolom yang sedang digunakan. Ini paling berguna untuk field seperti MarkdownEditor atau RichEditor yang membutuhkan ruang lebar agar nyaman digunakan, sementara field lain di sekitarnya tetap menggunakan layout multi-kolom.
+ 
+### 4. Apa keuntungan sistem grid 12 kolom?
+ 
+Sistem grid 12 kolom memungkinkan pembagian lebar yang sangat fleksibel karena angka 12 memiliki banyak faktor pembagi: 1, 2, 3, 4, 6, dan 12. Ini berarti kita bisa membuat layout 1/2, 1/3, 1/4, 2/3, dan kombinasinya tanpa angka desimal. Filament mengadopsi sistem ini dari Tailwind CSS sehingga layoutnya konsisten dengan standar web modern.
+ 
+---
+ 
+## J. Tugas Praktikum
+ 
+### Screenshot Form sebelum layout
+ 
+![Before Layout](ssf/upload.png)
+ 
+### Screenshot Form sesudah layout (2/3 - 1/3)
+ 
+![After Layout](ssf/layout.png)
+![After Layout](ssf/layout2.png)
+ 
+---
+ 
+## Kendala dan Solusi
+ 
+| No | Kendala | Solusi |
+|---|---|---|
+| 1 | Section tidak muncul setelah menambahkan `use` statement | Memastikan menggunakan `use Filament\Schemas\Components\Section` bukan `use Filament\Forms\Components\Section` karena Filament v4 memisahkan namespace-nya |
+| 2 | Layout `columns(3)` tidak terbagi rata, Section masih memanjang ke bawah | Menambahkan `->columnSpan(2)` pada Group kiri dan `->columnSpan(1)` pada Group kanan sesuai proporsi yang diinginkan |
+| 3 | Field MarkdownEditor mengacaukan layout grid | Menambahkan `->columnSpan(2)` pada MarkdownEditor agar lebarnya mengikuti lebar Section, bukan mengecil menjadi 1 kolom |
+ 
+---
