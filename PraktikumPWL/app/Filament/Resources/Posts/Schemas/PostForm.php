@@ -28,8 +28,15 @@ class PostForm
                 ->icon('heroicon-o-document-text')
                 ->schema([
                     Group::make([
-                        TextInput::make('title'),
-                        TextInput::make('slug'),
+                        TextInput::make('title')
+                            ->rules('required|min:3|max:50')
+                            ->maxLength(255),
+                            TextInput::make('slug')
+                                ->rules('required')
+                                ->unique()
+                                ->validationMessages([
+                                    'unique' => 'Slug must be unique',
+                                ]),
                         Select::make('category_id')
                             ->relationship('category', 'name')
                             ->preload()
