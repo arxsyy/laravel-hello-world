@@ -29,18 +29,20 @@ class PostForm
                 ->schema([
                     Group::make([
                         TextInput::make('title')
-                            ->rules('required|min:3|max:50')
-                            ->maxLength(255),
+                            ->required()
+                            ->rules('min:5|max:100'),
                             TextInput::make('slug')
-                                ->rules('required')
-                                ->unique()
+                                ->rules(['required', 'min:3'])
+                                ->unique(ignoreRecord: true)
                                 ->validationMessages([
-                                    'unique' => 'Slug must be unique',
+                                    'unique' => 'Slug sudah digunakan, gunakan slug lain.',
+                                    'min'    => 'Slug minimal 3 karakter.',
                                 ]),
                         Select::make('category_id')
                             ->relationship('category', 'name')
                             ->preload()
-                            ->searchable(),
+                            ->searchable()
+                            ->required(),
                         ColorPicker::make('color'),
                     ])->columns(2),
                     MarkdownEditor::make('content')
@@ -52,6 +54,7 @@ class PostForm
                         Section::make('Image Upload')
                             ->schema([
                                 FileUpload::make('image')
+                                    ->required()
                                     ->disk('public')
                                     ->directory('posts'),
                             ]),
@@ -63,12 +66,6 @@ class PostForm
                             ])->columns(2),
                     ])->columnSpan(1),
                         // RichEditor::make('content'),
-                        FileUpload::make('image')
-                        ->disk('public')
-                        ->directory('posts'),
-                        TagsInput::make('tags'),
-                        Checkbox::make('published'),
-                        DateTimePicker::make('published_at'),
             ])->columns(3);
     }
 }

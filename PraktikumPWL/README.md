@@ -329,3 +329,52 @@ Sistem grid 12 kolom memungkinkan pembagian lebar yang sangat fleksibel karena a
 | 3 | Field MarkdownEditor mengacaukan layout grid | Menambahkan `->columnSpan(2)` pada MarkdownEditor agar lebarnya mengikuti lebar Section, bukan mengecil menjadi 1 kolom |
  
 ---
+
+## JOBSHEET 6.3
+### Topik: Implementasi Form Validation pada Filament
+ 
+---
+ 
+## K. Analisis & Diskusi
+ 
+### 1. Mengapa validasi penting pada admin panel?
+ 
+Validasi memastikan data yang masuk ke database selalu dalam format dan nilai yang benar, sehingga mencegah data rusak atau tidak konsisten. Tanpa validasi, admin bisa saja menyimpan title yang kosong, slug yang duplikat, atau gambar yang tidak diupload, yang kemudian bisa menyebabkan error saat data tersebut ditampilkan di halaman publik.
+ 
+### 2. Apa perbedaan validasi client-side dan server-side?
+ 
+Validasi client-side berjalan di browser menggunakan JavaScript dan memberikan feedback instan tanpa perlu mengirim data ke server, namun bisa dilewati oleh pengguna yang menonaktifkan JavaScript. Validasi server-side berjalan di server dan tidak bisa dilewati oleh apapun karena data harus melewatinya sebelum disimpan. Filament menggunakan validasi server-side berbasis Laravel, sehingga data yang masuk dijamin sudah tervalidasi meskipun browser dimanipulasi.
+ 
+### 3. Mengapa unique otomatis bekerja saat edit data?
+ 
+Filament secara otomatis menambahkan parameter `ignoreRecord` saat mode edit, sehingga validasi unique akan mengabaikan record yang sedang diedit. Ini mencegah error saat pengguna menyimpan data tanpa mengubah slug, karena slug milik record itu sendiri tidak dianggap duplikat oleh database.
+ 
+### 4. Kapan kita perlu menggunakan rules array dibanding string?
+ 
+Format string dengan pipe seperti `'required|min:3|max:50'` lebih ringkas untuk aturan yang sederhana. Format array seperti `['required', 'min:3', 'max:50']` lebih disarankan ketika salah satu rule membutuhkan parameter kompleks, menggunakan Rule object dari Laravel seperti `Rule::unique()`, atau ketika aturan validasi panjang dan perlu dibaca dengan mudah.
+ 
+---
+ 
+## L. Tugas Praktikum
+ 
+### Screenshot Error required
+ 
+![Error Required](ssf/error.png)
+ 
+### Screenshot Error min length
+ 
+![Error Min](ssf/character.png)
+ 
+### Screenshot Error unique
+ 
+![Error Unique](ssf/slug.png)
+ 
+---
+ 
+## Kendala dan Solusi
+ 
+| No | Kendala | Solusi |
+|---|---|---|
+| 1 | Validasi `->unique()` tetap error saat mengedit post yang sudah ada | Mengganti `->unique()` dengan `->unique(ignoreRecord: true)` agar validasi tidak menolak slug milik record yang sedang diedit |
+| 2 | Pesan error `->validationMessages()` tidak muncul, tetap menggunakan pesan default | Memastikan key yang digunakan di dalam array sesuai dengan nama rule-nya, misalnya `'unique'` bukan `'Slug'` |
+| 3 | Validasi `required` pada FileUpload menyebabkan error saat mengedit post karena gambar tidak diupload ulang | Menghapus `->required()` dari FileUpload dan mengandalkan validasi hanya saat Create dengan menambahkan kondisi menggunakan `->requiredWithout()` atau menggunakan `->hiddenOn('edit')` |
