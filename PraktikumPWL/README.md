@@ -378,3 +378,60 @@ Format string dengan pipe seperti `'required|min:3|max:50'` lebih ringkas untuk 
 | 1 | Validasi `->unique()` tetap error saat mengedit post yang sudah ada | Mengganti `->unique()` dengan `->unique(ignoreRecord: true)` agar validasi tidak menolak slug milik record yang sedang diedit |
 | 2 | Pesan error `->validationMessages()` tidak muncul, tetap menggunakan pesan default | Memastikan key yang digunakan di dalam array sesuai dengan nama rule-nya, misalnya `'unique'` bukan `'Slug'` |
 | 3 | Validasi `required` pada FileUpload menyebabkan error saat mengedit post karena gambar tidak diupload ulang | Menghapus `->required()` dari FileUpload dan mengandalkan validasi hanya saat Create dengan menambahkan kondisi menggunakan `->requiredWithout()` atau menggunakan `->hiddenOn('edit')` |
+
+---
+
+## JOBSHEET 7
+### Topik: Implementasi Wizard Form (Multi Step FOrm)
+ 
+### Membuat Products Table
+![prak](ssf/js7.png)
+
+### Tampilan Table Database
+![prak](ssf/tableproduct.png)
+
+### Membuat Model Product
+![prak](ssf/modelproduct.png)
+
+### Membuat Resource Product
+![prak](ssf/resourceproduct.png)
+
+### Tampilan /product
+![prak](ssf/product.png)
+
+### Tampilan Create Product
+![prak](ssf/createproduct.png)
+
+### Menghilangkan Create
+![prak](ssf/hilangcreate.png)
+
+### Membuat Contoh Product
+![prak](ssf/contohproduct.png)
+
+### Tampilan Input
+![prak](ssf/viewbuku.png)
+
+### Tampilan Database Product
+![prak](ssf/dbproduct.png)
+
+---
+
+## M. Analisis & Diskusi
+
+### 1. Mengapa Wizard Form lebih baik untuk form panjang?
+
+Wizard membagi form panjang menjadi beberapa langkah yang fokus, sehingga pengguna tidak merasa overwhelming. Setiap step hanya menampilkan field yang relevan, membuat input lebih terstruktur dan mengurangi tingkat kesalahan karena pengguna bisa fokus pada satu kategori data sekaligus.
+
+### 2. Kapan kita menggunakan skippable()?
+
+`skippable()` digunakan ketika step tertentu bersifat opsional, misalnya promo code atau informasi tambahan. Dengan method `->skippable()`, pengguna bisa melewati step tersebut tanpa harus mengisi field, sementara step wajib (required) tetap harus diselesaikan untuk melanjutkan.
+
+### 3. Apa kelebihan multi step dibanding single form panjang?
+
+Multi-step form memberikan progress visual yang jelas kepada pengguna sehingga mereka tahu sudah sejauh mana. Form panjang dalam satu halaman membuat user scroll berkali-kali dan sulit melacak posisi. Multi-step juga memudahkan validasi per section dan memberikan kesempatan user untuk review sebelum submit.
+
+### 4. Apakah wizard cocok untuk semua jenis form?
+
+Tidak. Wizard lebih cocok untuk form kompleks dengan banyak field (10+) yang bisa dikelompokkan logis. Form sederhana dengan 3-4 field tidak perlu wizard karena akan terasa berlebihan. Pilihan penggunaan wizard bergantung pada jumlah field, kompleksitas, dan user experience yang ingin dicapai.
+
+---

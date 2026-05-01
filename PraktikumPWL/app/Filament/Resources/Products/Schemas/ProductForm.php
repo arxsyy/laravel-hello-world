@@ -11,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Checkbox;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 
 class ProductForm
 {
@@ -22,6 +23,7 @@ class ProductForm
                     // STEP 1 – Product Info
                     Step::make('Product Info')
                         ->description('Isi Informasi Produk')
+                        ->icon(Heroicon::OutlinedDocument)
                         ->schema([
                             Group::make([
                                 TextInput::make('name')
@@ -36,11 +38,16 @@ class ProductForm
                     // STEP 2 – Pricing & Stock
                     Step::make('Product Price and Stock')
                         ->description('Isi Harga Produk')
+                        ->icon(Heroicon::OutlinedCurrencyDollar)
                         ->schema([
                             Group::make([
                                 TextInput::make('price')
                                     ->numeric()
-                                    ->required(),
+                                    ->required()
+                                    ->gt(0)
+                                    ->validationMessages([
+                                        'gt' => 'Harga harus lebih besar dari 0',
+                                    ]),
                                 TextInput::make('stock')
                                     ->numeric()
                                     ->required(),
@@ -50,6 +57,7 @@ class ProductForm
                     // STEP 3 – Media & Status
                     Step::make('Media and status')
                         ->description('Isi Gambar Produk')
+                        ->icon(Heroicon::OutlinedPhoto)
                         ->schema([
                             FileUpload::make('image')
                                 ->disk('public')
