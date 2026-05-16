@@ -435,3 +435,69 @@ Multi-step form memberikan progress visual yang jelas kepada pengguna sehingga m
 Tidak. Wizard lebih cocok untuk form kompleks dengan banyak field (10+) yang bisa dikelompokkan logis. Form sederhana dengan 3-4 field tidak perlu wizard karena akan terasa berlebihan. Pilihan penggunaan wizard bergantung pada jumlah field, kompleksitas, dan user experience yang ingin dicapai.
 
 ---
+
+## JOBSHEET 10
+### Topik: Implementasi Sorting (Ascending & Descending) pada Table Filament
+
+---
+
+### Sorting pada Kolom Title
+![prak](ssf/101.png)
+
+### Sorting pada Kolom Slug
+![prak](ssf/102.png)
+
+### Sorting pada Relasi Category
+![prak](ssf/103.png)
+
+### Sorting pada Kolom Created At
+![prak](ssf/104.png)
+
+### Default Sort (Created At Descending)
+![prak](ssf/105.png)
+
+---
+
+## L. Analisis & Diskusi
+
+### 1. Mengapa sorting penting pada admin panel?
+
+Sorting memungkinkan admin menemukan data yang dibutuhkan dengan cepat tanpa harus menelusuri seluruh tabel secara manual. Ketika data sudah berjumlah ratusan atau ribuan baris, mencari post terbaru atau mengurutkan berdasarkan nama menjadi sangat penting untuk efisiensi kerja. Tanpa sorting, admin terpaksa melakukan pencarian manual yang memakan waktu dan rawan kesalahan.
+
+### 2. Apa perbedaan `sortable()` biasa dengan `defaultSort()`?
+
+`->sortable()` memberikan kontrol kepada pengguna untuk mengklik header kolom dan memilih urutan data sesuai kebutuhannya saat itu. `->defaultSort()` sebaliknya dikendalikan oleh developer dan menentukan urutan awal tabel sebelum pengguna melakukan interaksi apapun. Keduanya bisa digunakan bersamaan, di mana `defaultSort()` menentukan tampilan awal dan `sortable()` memberi kebebasan pengguna untuk mengubah urutannya.
+
+### 3. Mengapa kolom relasi (`category.name`) tetap bisa di-sort?
+
+Filament secara otomatis menangani JOIN ke tabel relasi di balik layar menggunakan Eloquent. Ketika `->sortable()` ditambahkan pada `TextColumn::make('category.name')`, Filament mengetahui bahwa `category` adalah relasi dan secara otomatis membuat query dengan `JOIN` ke tabel `categories` lalu mengurutkan berdasarkan kolom `name`-nya. Developer tidak perlu menulis query manual sama sekali.
+
+### 4. Kapan kita menggunakan `'desc'` sebagai default sort?
+
+`'desc'` paling tepat digunakan ketika data terbaru atau terpenting perlu langsung terlihat tanpa pengguna harus melakukan klik tambahan. Contohnya pada tabel Posts di mana admin ingin melihat artikel terbaru di bagian atas, tabel log aktivitas di mana kejadian terkini lebih relevan, atau tabel order di mana transaksi terbaru harus segera ditindaklanjuti. Sebaliknya, `'asc'` lebih cocok untuk data yang secara natural dibaca dari awal seperti daftar nama atau nomor urut.
+
+---
+
+## M. Tugas Praktikum
+
+### Screenshot Sorting Title Ascending (A–Z)
+
+![Sorting Title Asc](ssf/107.png)
+
+### Screenshot Sorting Title Descending (Z–A)
+
+![Sorting Title Desc](ssf/108.png)
+
+### Screenshot Sorting Date Descending (Terbaru di atas)
+
+![Sorting Date Desc](ssf/109.png)
+
+---
+
+## Kendala dan Solusi
+
+| No | Kendala | Solusi |
+|---|---|---|
+| 1 | Sorting pada `category.name` tidak bekerja dan memunculkan error query | Memastikan relasi `belongsTo(Category::class)` sudah terdefinisi dengan benar di model Post karena Filament membutuhkan relasi Eloquent untuk melakukan JOIN otomatis |
+| 2 | `->defaultSort()` tidak memberikan efek apapun pada tampilan tabel | Memastikan `->defaultSort()` ditulis sebelum `->columns([...])` bukan di dalamnya, karena method ini berada di level konfigurasi table bukan di level kolom |
+| 3 | Kolom `created_at` menampilkan format timestamp mentah seperti `2026-02-28 14:36:12` | Menambahkan `->dateTime()` pada kolom `created_at` agar nilainya diformat menjadi tampilan tanggal yang lebih mudah dibaca |
