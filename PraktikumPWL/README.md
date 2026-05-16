@@ -572,3 +572,61 @@ Kolom `created_at` menyimpan tanggal beserta waktu, contohnya `2026-02-28 14:36:
 | 1 | Filter tanggal muncul di panel tapi tidak memfilter data saat di-apply | Memastikan bagian `->query(...)` sudah ditambahkan setelah `->schema([...])` karena tanpa query logic, filter hanya tampil tanpa efek apapun |
 | 2 | SelectFilter tidak menampilkan opsi kategori di dropdown | Memastikan `use Filament\Tables\Filters\SelectFilter` sudah ditambahkan di bagian atas file dan relasi `belongsTo(Category::class)` sudah terdefinisi di model Post |
 | 3 | Search pada `category.name` tidak menemukan hasil meskipun data ada | Memastikan `->searchable()` ditulis setelah `->sortable()` dalam satu chain, bukan dibuat sebagai kolom baru yang terpisah |
+
+---
+
+## JOBSHEET 12
+### Topik: Implementasi Toggle Column pada Table Filament
+
+---
+
+### Menambahkan Kolom ID, Tags, dan Published
+![prak](ssf/121.png)
+
+### Mengaktifkan toggleable() pada Kolom
+![prak](ssf/122.png)
+
+### Kolom Tags dan ID Hidden by Default
+![prak](ssf/123.png)
+
+---
+
+## J. Analisis & Diskusi
+
+### 1. Mengapa toggle column penting pada admin panel?
+
+Tabel yang memiliki banyak kolom akan terlihat penuh dan sulit dibaca, terutama di layar yang tidak terlalu lebar. Toggle column memungkinkan setiap pengguna admin menyesuaikan kolom yang ditampilkan sesuai kebutuhannya saat itu tanpa mengubah konfigurasi sistem. Developer hanya perlu mendefinisikan semua kolom sekali, selebihnya user yang mengatur tampilan sesuai konteks pekerjaannya.
+
+### 2. Apa perbedaan `->toggleable()` biasa dengan `isToggledHiddenByDefault: true`?
+
+`->toggleable()` tanpa parameter membuat kolom tampil secara default saat halaman pertama dibuka, namun user bisa menyembunyikannya kapan saja. `->toggleable(isToggledHiddenByDefault: true)` sebaliknya membuat kolom tersembunyi sejak awal, sehingga tabel terlihat lebih ringkas saat pertama dibuka. Keduanya tetap bisa diubah oleh user melalui menu toggle, perbedaannya hanya pada kondisi awal yang ditentukan oleh developer.
+
+### 3. Mengapa preferensi kolom tetap tersimpan saat pindah halaman?
+
+Filament menyimpan preferensi toggle kolom ke dalam session browser, bukan ke database. Selama session masih aktif (browser belum ditutup dan belum logout), konfigurasi kolom yang dipilih user akan tetap sama meskipun berpindah halaman berkali-kali. Ini membuat pengalaman admin lebih konsisten karena tidak perlu mengatur ulang tampilan kolom setiap kali membuka halaman.
+
+### 4. Kapan sebaiknya kolom disembunyikan secara default?
+
+Kolom sebaiknya disembunyikan secara default ketika informasinya jarang dibutuhkan dalam aktivitas sehari-hari atau hanya relevan untuk keperluan tertentu. Contohnya kolom `id` yang hanya dibutuhkan saat debugging atau mencari data spesifik, kolom `tags` yang lebih relevan saat mengedit konten, atau kolom teknis seperti `updated_at` yang tidak perlu terlihat setiap saat. Prinsipnya adalah tampilkan hanya informasi yang paling sering dibutuhkan secara default agar tabel tetap bersih dan mudah dibaca.
+
+---
+
+## K. Tugas Praktikum
+
+### Screenshot Tampilan Sebelum Toggle (Default)
+
+![Before Toggle](ssf/123.png)
+
+### Screenshot Tampilan Setelah Beberapa Kolom Disembunyikan
+
+![After Toggle](ssf/124.png)
+
+---
+
+## Kendala dan Solusi
+
+| No | Kendala | Solusi |
+|---|---|---|
+| 1 | `IconColumn` tidak dikenali dan memunculkan error `Class not found` | Menambahkan `use Filament\Tables\Columns\IconColumn` di bagian atas file karena class ini berada di namespace yang berbeda dari `TextColumn` |
+| 2 | Kolom `published` menampilkan angka 0 atau 1 alih-alih ikon centang/silang | Memastikan method `->boolean()` sudah ditambahkan setelah `IconColumn::make('published')` |
+| 3 | Preferensi toggle tidak tersimpan setelah pindah halaman | Memastikan tidak ada konfigurasi yang menonaktifkan session di Laravel, dan mencoba clear cache dengan `php artisan optimize:clear` lalu refresh browser |
