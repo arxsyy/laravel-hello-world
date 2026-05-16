@@ -501,3 +501,74 @@ Filament secara otomatis menangani JOIN ke tabel relasi di balik layar menggunak
 | 1 | Sorting pada `category.name` tidak bekerja dan memunculkan error query | Memastikan relasi `belongsTo(Category::class)` sudah terdefinisi dengan benar di model Post karena Filament membutuhkan relasi Eloquent untuk melakukan JOIN otomatis |
 | 2 | `->defaultSort()` tidak memberikan efek apapun pada tampilan tabel | Memastikan `->defaultSort()` ditulis sebelum `->columns([...])` bukan di dalamnya, karena method ini berada di level konfigurasi table bukan di level kolom |
 | 3 | Kolom `created_at` menampilkan format timestamp mentah seperti `2026-02-28 14:36:12` | Menambahkan `->dateTime()` pada kolom `created_at` agar nilainya diformat menjadi tampilan tanggal yang lebih mudah dibaca |
+
+---
+
+## JOBSHEET 11
+### Topik: Implementasi Search & Filter pada Table Filament
+
+---
+
+### Search pada Kolom Title
+![prak](ssf/111.png)
+
+### Search pada Kolom Slug
+![prak](ssf/112.png)
+
+### Search pada Relasi Category
+![prak](ssf/113.png)
+
+### Filter Berdasarkan Tanggal (Created At)
+![prak](ssf/114.png)
+
+### Filter Berdasarkan Kategori (SelectFilter)
+![prak](ssf/115.png)
+
+### Kombinasi Search + Filter
+![prak](ssf/116.png)
+
+---
+
+## H. Analisis & Diskusi
+
+### 1. Mengapa search tidak cocok untuk filter tanggal?
+
+Search bekerja dengan query `LIKE '%keyword%'` yang mencari kecocokan teks secara parsial. Kolom `created_at` di database menyimpan nilai dalam format datetime lengkap seperti `2026-02-28 14:36:12`, sehingga mencarinya dengan teks tidak akan akurat dan bisa menghasilkan hasil yang tidak terduga. Filter berbasis DatePicker jauh lebih tepat karena menggunakan `whereDate()` yang memang dirancang untuk mencocokkan nilai tanggal secara presisi.
+
+### 2. Apa fungsi `->relationship()` pada SelectFilter?
+
+`->relationship('category', 'name')` memberitahu Filament untuk mengambil data opsi dropdown langsung dari tabel relasi, dalam hal ini tabel `categories` dengan menampilkan kolom `name` sebagai label pilihannya. Tanpa method ini, kita harus menyediakan opsi secara manual menggunakan `->options()` dan memperbaruinya setiap kali ada data kategori baru. Dengan `relationship()`, opsi dropdown selalu sinkron otomatis dengan data di database.
+
+### 3. Mengapa kita perlu `whereDate()` pada query filter?
+
+Kolom `created_at` menyimpan tanggal beserta waktu, contohnya `2026-02-28 14:36:12`. Jika menggunakan `where('created_at', $date)`, query akan mencari kecocokan eksak termasuk waktu, sehingga tidak akan pernah menemukan data karena pengguna hanya memilih tanggal tanpa jam. `whereDate()` secara otomatis mengabaikan bagian waktu dan hanya mencocokkan bagian tanggalnya saja, sehingga semua post yang dibuat pada tanggal tersebut berhasil ditemukan.
+
+### 4. Apa perbedaan `->searchable()` dan `->filters()`?
+
+`->searchable()` ditambahkan pada kolom dan bekerja secara real-time saat pengguna mengetik di search bar, cocok untuk pencarian teks bebas seperti title dan slug. `->filters()` adalah sistem filter yang terpisah di mana pengguna memilih kondisi spesifik melalui form (seperti DatePicker atau dropdown), lalu mengklik Apply untuk menjalankan query. Keduanya bisa aktif bersamaan dan saling melengkapi: search menyaring berdasarkan teks, filter menyaring berdasarkan kondisi yang lebih terstruktur seperti tanggal dan relasi.
+
+---
+
+## I. Tugas Praktikum
+
+### Screenshot Search Title
+
+![Search Title](ssf/111.png)
+
+### Screenshot Filter Tanggal
+
+![Filter Tanggal](ssf/117.png)
+
+### Screenshot Filter Kategori
+
+![Filter Kategori](ssf/118.png)
+
+---
+
+## Kendala dan Solusi
+
+| No | Kendala | Solusi |
+|---|---|---|
+| 1 | Filter tanggal muncul di panel tapi tidak memfilter data saat di-apply | Memastikan bagian `->query(...)` sudah ditambahkan setelah `->schema([...])` karena tanpa query logic, filter hanya tampil tanpa efek apapun |
+| 2 | SelectFilter tidak menampilkan opsi kategori di dropdown | Memastikan `use Filament\Tables\Filters\SelectFilter` sudah ditambahkan di bagian atas file dan relasi `belongsTo(Category::class)` sudah terdefinisi di model Post |
+| 3 | Search pada `category.name` tidak menemukan hasil meskipun data ada | Memastikan `->searchable()` ditulis setelah `->sortable()` dalam satu chain, bukan dibuat sebagai kolom baru yang terpisah |
