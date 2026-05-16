@@ -630,3 +630,71 @@ Kolom sebaiknya disembunyikan secara default ketika informasinya jarang dibutuhk
 | 1 | `IconColumn` tidak dikenali dan memunculkan error `Class not found` | Menambahkan `use Filament\Tables\Columns\IconColumn` di bagian atas file karena class ini berada di namespace yang berbeda dari `TextColumn` |
 | 2 | Kolom `published` menampilkan angka 0 atau 1 alih-alih ikon centang/silang | Memastikan method `->boolean()` sudah ditambahkan setelah `IconColumn::make('published')` |
 | 3 | Preferensi toggle tidak tersimpan setelah pindah halaman | Memastikan tidak ada konfigurasi yang menonaktifkan session di Laravel, dan mencoba clear cache dengan `php artisan optimize:clear` lalu refresh browser |
+
+---
+
+## JOBSHEET 13
+### Topik: Implementasi Table Actions & Custom Action di Filament
+
+---
+
+### Menambahkan Delete Action
+![prak](ssf/131.png)
+
+### Menambahkan Replicate Action
+![prak](ssf/132.png)
+
+### Custom Action Status Change
+![prak](ssf/133.png)
+
+### Modal Status Change dengan Checkbox
+![prak](ssf/134.png)
+
+### Tampilan Semua Action di Tabel
+![prak](ssf/135.png)
+
+---
+
+## K. Analisis & Diskusi
+
+### 1. Mengapa action di tabel lebih efisien dibanding halaman edit?
+
+Action di tabel memungkinkan admin melakukan operasi umum seperti menghapus data atau mengubah status hanya dengan satu klik tanpa perlu berpindah halaman. Jika hanya ingin menghapus satu post, menggunakan halaman edit berarti harus klik Edit, tunggu halaman load, scroll ke bawah cari tombol Delete, lalu konfirmasi — minimal 4 langkah. Dengan action langsung di tabel, cukup satu klik dan konfirmasi. Efisiensi ini semakin terasa ketika admin perlu memproses banyak record secara berurutan.
+
+### 2. Apa perbedaan predefined action dan custom action?
+
+Predefined action seperti `EditAction`, `DeleteAction`, dan `ReplicateAction` sudah disediakan oleh Filament dengan logika, tampilan, dan konfirmasi yang lengkap — developer hanya perlu memanggil `::make()` tanpa menulis logika apapun. Custom action menggunakan `Action::make()` di mana developer mendefinisikan sendiri tampilan form melalui `->schema()` dan logika yang dijalankan melalui `->action()`. Predefined action cocok untuk operasi CRUD standar, sedangkan custom action digunakan untuk kebutuhan bisnis spesifik yang tidak tersedia secara bawaan.
+
+### 3. Bagaimana cara menambahkan validasi dalam custom action?
+
+Validasi pada custom action ditambahkan langsung di field dalam `->schema([...])`, sama persis seperti validasi form biasa di Filament. Misalnya untuk memastikan field tidak kosong bisa ditambahkan `->required()`, atau untuk validasi panjang teks menggunakan `->minLength()` dan `->maxLength()`. Filament akan menjalankan semua validasi tersebut sebelum `->action()` dieksekusi, sehingga data yang masuk ke dalam logika update sudah terjamin valid.
+
+### 4. Kapan kita menggunakan Replicate?
+
+Replicate paling berguna ketika perlu membuat data baru yang sebagian besar isinya sama dengan data yang sudah ada, sehingga menghemat waktu pengisian form dari awal. Contoh penggunaannya adalah membuat post baru dengan kategori dan tag yang sama tetapi konten berbeda, menduplikasi produk dengan spesifikasi serupa untuk varian berbeda, atau membuat template data yang akan dimodifikasi sedikit. Tanpa Replicate, admin harus membuat record baru dan mengisi ulang semua field yang sama secara manual.
+
+---
+
+## L. Tugas Praktikum
+
+### Screenshot Delete Button di Tabel
+
+![Delete Action](ssf/131.png)
+
+### Screenshot Replicate Action
+
+![Replicate Action](ssf/132.png)
+
+### Screenshot Custom Status Action
+
+![Status Action](ssf/134.png)
+
+---
+
+## Kendala dan Solusi
+
+| No | Kendala | Solusi |
+|---|---|---|
+| 1 | Error `Class 'Filament\Actions\Action' not found` saat menambahkan custom action | Menambahkan `use Filament\Actions\Action` dan `use Filament\Forms\Components\Checkbox` di bagian atas file karena kedua class ini berada di namespace yang berbeda |
+| 2 | Checkbox pada modal custom action selalu unchecked meskipun post sudah published | Memastikan syntax arrow function ditulis dengan benar: `->default(fn($record): bool => $record->published)` — tanda `:` sebelum `bool` tidak boleh dihilangkan |
+| 3 | Tombol Delete tidak menampilkan dialog konfirmasi dan langsung menghapus data | Mengganti `use Filament\Actions\DeleteAction` karena pada Filament v4 namespace action tabel berbeda, perlu dipastikan menggunakan class yang sesuai dengan versi yang terinstall |
